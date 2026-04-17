@@ -254,3 +254,30 @@ class NewYorkTimesMiniDownloader(NewYorkTimesDownloader):
         url = self.url_from_date.format(puzzle_date)
 
         return url
+
+
+class NewYorkTimesMidiDownloader(NewYorkTimesDownloader):
+    command = "nytmid"
+    outlet = "New York Times Midi"
+    outlet_prefix = "NY Times Midi"
+
+    def __init__(self, **kwargs):
+        super().__init__(inherit_settings="nyt", **kwargs)
+
+        self.url_from_date = (
+            "https://www.nytimes.com/svc/crosswords/v6/puzzle/midi/{}.json"
+        )
+
+    @classmethod
+    def matches_url(cls, url_components):
+        return "nytimes.com" in url_components.netloc and "midi" in url_components.path
+
+    def find_latest(self):
+        oracle = "https://www.nytimes.com/svc/crosswords/v2/oracle/midi.json"
+
+        res = requests.get(oracle)
+        puzzle_date = res.json()["results"]["current"]["print_date"]
+
+        url = self.url_from_date.format(puzzle_date)
+
+        return url
