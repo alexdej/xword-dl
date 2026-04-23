@@ -115,6 +115,13 @@ jobs:
           NYT_S_VALUE: ${{ secrets.NYT_S_VALUE }}
         run: |
           xword-dl nyt --settings '{"NYT-S": "'$NYT_S_VALUE'"}' -d "12/17/23"
+      - name: Test New York Times Variety (diagramless) by date
+        if: '!cancelled()'
+        env:
+          NYT_S_VALUE: ${{ secrets.NYT_S_VALUE }}
+        run: |
+          xword-dl nytv --settings '{"NYT-S": "'$NYT_S_VALUE'"}' -d "12/14/08" -o diagramless.puz
+          xxd -s 48 -l 2 diagramless.puz | grep -q "0104"  # check diagramless flag is set
       - name: Test New York Times blank clues
         if: '!cancelled()'
         env:
@@ -144,7 +151,7 @@ jobs:
         run: xword-dl tnym -d "5/16/25"
       - name: Test New Yorker Mini by URL
         if: '!cancelled()'
-        run: xword-dl "https://www.newyorker.com/puzzles-and-games-dept/mini-crossword/2025/05/16"	
+        run: xword-dl "https://www.newyorker.com/puzzles-and-games-dept/mini-crossword/2025/05/16"
       - name: Test Newsday latest
         if: '!cancelled()'
         run: xword-dl nd

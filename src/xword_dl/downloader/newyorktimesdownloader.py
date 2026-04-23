@@ -220,13 +220,22 @@ class NewYorkTimesVarietyDownloader(NewYorkTimesDownloader):
             "https://www.nytimes.com/svc/crosswords/v6/puzzle/variety/{}.json"
         )
 
+    def find_latest(self):
+        raise XWordDLException(
+            "NYT Variety puzzles are no longer published digitally. "
+            "Use --date to download a specific historical puzzle."
+        )
+
     def parse_xword(self, xw_data):
         try:
-            return super().parse_xword(xw_data)
+            puzzle = super().parse_xword(xw_data)
         except ValueError:
             raise XWordDLException(
                 "Encountered error while parsing data. Maybe the selected puzzle is not a crossword?"
             )
+        if xw_data.get("subcategory") == 3:
+            puzzle.puzzletype = 0x0401  # PuzzleType.Diagramless
+        return puzzle
 
 
 class NewYorkTimesMiniDownloader(NewYorkTimesDownloader):
