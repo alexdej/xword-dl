@@ -46,9 +46,7 @@ class PrincetonianBaseDownloader(BaseDownloader):
     def fetch_data(self, solver_url):
         puzzle_id = solver_url.rstrip("/").split("/")[-1]
 
-        meta = self.session.get(
-            f"{self.BASE_URL}/api/crosswords/{puzzle_id}"
-        ).json()
+        meta = self.session.get(f"{self.BASE_URL}/api/crosswords/{puzzle_id}").json()
         clues = self.session.get(
             f"{self.BASE_URL}/api/crosswords/{puzzle_id}/clues"
         ).json()
@@ -115,9 +113,7 @@ class PrincetonianBaseDownloader(BaseDownloader):
             puzzle._extensions_order.append(b"GEXT")
             puzzle.markup()
 
-        sorted_clues = sorted(
-            clues, key=lambda c: (c["y"], c["x"], not c["is_across"])
-        )
+        sorted_clues = sorted(clues, key=lambda c: (c["y"], c["x"], not c["is_across"]))
         puzzle.clues = [c["clue"] for c in sorted_clues]
 
         return puzzle
