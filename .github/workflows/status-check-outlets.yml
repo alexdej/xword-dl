@@ -151,6 +151,15 @@ jobs:
       - name: Test Newsday by date
         if: '!cancelled()'
         run: xword-dl nd -d "dec. 12, 2023"
+      - name: Test Princetonian latest
+        if: '!cancelled()'
+        run: xword-dl prince
+      - name: Test Princetonian by date
+        if: '!cancelled()'
+        run: xword-dl prince -d "2026-03-30"
+      - name: Test Princetonian Mini latest
+        if: '!cancelled()'
+        run: xword-dl prince-mini
       - name: Test Observer Everyman latest
         if: '!cancelled()'
         run: xword-dl ever
