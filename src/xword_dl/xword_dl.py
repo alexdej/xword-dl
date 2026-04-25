@@ -247,7 +247,11 @@ def main():
         try:
             selected_downloader.authenticate(args.username, args.password)
         except NotImplementedError:
-            sys.exit("Authentication not supported for {}.".format(selected_downloader.outlet))
+            sys.exit(
+                "Authentication not supported for {}.".format(
+                    selected_downloader.outlet
+                )
+            )
 
     elif args.authenticate:
         sys.exit("Authentication flag must use a puzzle outlet keyword.")
