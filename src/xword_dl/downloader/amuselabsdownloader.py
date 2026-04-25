@@ -180,6 +180,7 @@ class AmuseLabsDownloader(BaseDownloader):
         )
         uid = self.session.cookies.get("uid")
         if set_name and self.id and uid:
+            assert self.url_from_id is not None
             self.url_from_id += "&fvlt=" + _compute_fvlt(set_name, self.id, uid)
 
     def find_puzzle_url_from_id(self, puzzle_id):
