@@ -311,13 +311,16 @@ class NewYorkTimesBonusDownloader(NewYorkTimesDownloader):
     def find_latest(self):
         today = datetime.date.today()
         q = "https://www.nytimes.com/svc/crosswords/v3/null/puzzles.json"
-        res = requests.get(q, params={
-            "publish_type": "bonus",
-            "sort_order": "desc",
-            "sort_by": "print_date",
-            "date_start": f"{today.year}-01-01",
-            "date_end": f"{today.year}-12-31",
-        })
+        res = requests.get(
+            q,
+            params={
+                "publish_type": "bonus",
+                "sort_order": "desc",
+                "sort_by": "print_date",
+                "date_start": f"{today.year}-01-01",
+                "date_end": f"{today.year}-12-31",
+            },
+        )
         res.raise_for_status()
 
         results = res.json().get("results", [])
