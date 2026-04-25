@@ -356,7 +356,9 @@ def _compute_fvlt(set_name: str, puzzle_id: str, uid: str) -> str:
             t = (t + ord(c)) & 0xFFFFFFFF
         return t
 
-    return format((charsum(set_name) ^ charsum(puzzle_id) ^ charsum(uid)) & 0xFFFFFFFF, "x")
+    return format(
+        (charsum(set_name) ^ charsum(puzzle_id) ^ charsum(uid)) & 0xFFFFFFFF, "x"
+    )
 
 
 # helper functions for rawc deobfuscation
