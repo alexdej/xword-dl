@@ -91,7 +91,9 @@ class BaseDownloader:
         puzzle = self.parse_xword(xword_data)
 
         puzzle = sanitize_for_puzfile(
-            puzzle, preserve_html=self.settings.get("preserve_html", False)
+            puzzle,
+            preserve_html=self.settings.get("preserve_html", False),
+            unicode=self.settings.get("unicode", False),
         )
 
         return puzzle

@@ -62,22 +62,28 @@ def remove_invalid_chars_from_filename(filename: str):
     return filename
 
 
-def cleanup(field: str, preserve_html=False):
-    if preserve_html:
-        field = unidecode(emoji.demojize(field)).strip()
-    else:
-        field = unidecode(emoji.demojize(html2text(field, bodywidth=0))).strip()
-    return field
+def cleanup(field: str, preserve_html=False, unicode=False):
+    if not preserve_html:
+        field = html2text(field, bodywidth=0)
+    if not unicode:
+        field = unidecode(emoji.demojize(field))
+    return field.strip()
 
 
-def sanitize_for_puzfile(puzzle: Puzzle, preserve_html=False) -> Puzzle:
-    puzzle.title = cleanup(puzzle.title, preserve_html)
-    puzzle.author = cleanup(puzzle.author, preserve_html)
-    puzzle.copyright = cleanup(puzzle.copyright, preserve_html)
+def sanitize_for_puzfile(puzzle: Puzzle, preserve_html=False, unicode=False) -> Puzzle:
+    if unicode:
+        # A v2.0 .puz is UTF-8, so text outside Latin-1 (emoji, dashes,
+        # letters like "ł") can be kept as it is.
+        puzzle.set_version("2.0")
+        puzzle.encoding = "UTF-8"
 
-    puzzle.notes = cleanup(puzzle.notes, preserve_html)
+    puzzle.title = cleanup(puzzle.title, preserve_html, unicode)
+    puzzle.author = cleanup(puzzle.author, preserve_html, unicode)
+    puzzle.copyright = cleanup(puzzle.copyright, preserve_html, unicode)
 
-    puzzle.clues = [cleanup(clue, preserve_html) for clue in puzzle.clues]
+    puzzle.notes = cleanup(puzzle.notes, preserve_html, unicode)
+
+    puzzle.clues = [cleanup(clue, preserve_html, unicode) for clue in puzzle.clues]
 
     return puzzle
 
