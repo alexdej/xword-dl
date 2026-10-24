@@ -214,6 +214,17 @@ def main():
     )
 
     parser.add_argument(
+        "--unicode",
+        help=textwrap.dedent("""\
+                            saves a version 2.0 .puz file, which is UTF-8,
+                            and keeps emoji and other characters outside
+                            Latin-1 (by default, they are converted to
+                            ASCII)"""),
+        action="store_true",
+        default=False,
+    )
+
+    parser.add_argument(
         "--settings",
         help=textwrap.dedent("""\
                             JSON-encoded object specifying settings
@@ -266,6 +277,8 @@ def main():
         options["password"] = args.password
     if args.preserve_html:
         options["preserve_html"] = args.preserve_html
+    if args.unicode:
+        options["unicode"] = args.unicode
     if args.output:
         options["filename"] = args.output
     if args.date:
